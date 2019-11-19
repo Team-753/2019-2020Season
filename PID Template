@@ -35,7 +35,7 @@ class MyRobot(wpilib.TimedRobot):
 	def teleopInit(self):
 		pass
 	def teleopPeriodic(self):
-		
+		#use this to control the motor: rev.CANSparkMax(4,rev.MotorType.kBrushless).set(0.5)
 		pass
 		
 		
