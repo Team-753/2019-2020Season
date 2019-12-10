@@ -2,7 +2,7 @@
 import wpilib
 import math
 import rev
-
+from wpilib_controller import PIDController
 
 class MyRobot(wpilib.TimedRobot):
 	
