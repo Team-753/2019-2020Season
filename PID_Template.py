@@ -19,7 +19,7 @@ class MyRobot(wpilib.TimedRobot):
 		
 		#set the range of values the Input will give
 		#spark max are 42counts per revolution
-		self.controller.enableContinuousInput(0, 4096)
+		self.controller.enableContinuousInput(0, 42)
 		
 		#you can find information about the motor stuff in the documentation
 		self.speed = self.controller.calculate(rev.CANSparkMax(4,rev.MotorType.kBrushless).getEncoder())
