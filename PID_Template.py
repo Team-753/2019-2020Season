@@ -22,7 +22,7 @@ class MyRobot(wpilib.TimedRobot):
 		self.controller.enableContinuousInput(0, 4096)
 		
 		#you can find information about the motor stuff in the documentation
-		self.PID_speed = self.controller.calculate(rev.CANSparkMax(4,rev.MotorType.kBrushless).getEncoder())
+		self.speed = self.controller.calculate(rev.CANSparkMax(4,rev.MotorType.kBrushless).getEncoder())
 
 		
 		
@@ -42,7 +42,7 @@ class MyRobot(wpilib.TimedRobot):
 		if self.auxiliary1.getRawButton(self.exampleButton):
 			self.controller.setpoint(84)
 		else:
-			rev.CANSparkMax(4,rev.MotorType.kBrushless).set(self.PID_speed)
+			rev.CANSparkMax(4,rev.MotorType.kBrushless).set(self.speed)
 		
 		
 		
