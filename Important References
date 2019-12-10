@@ -2,3 +2,8 @@
 Use this link to find documentation on the 2020 WPILIB PID controller ---> https://pypi.org/project/wpilib-controller/ 
 
 This link will bring you to the REV motor section of the robotpy documentation ---> https://robotpy.readthedocs.io/projects/rev/en/stable/api_mot.html
+
+For good CONCEPTUAL explanations on PID:
+https://www.youtube.com/watch?v=jIKBWO7ps0w
+https://www.youtube.com/watch?v=Z24fSBVJeGs
+(don't pay attention to the coding aspect as it is in Java)
