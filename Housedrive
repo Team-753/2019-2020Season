@@ -1,0 +1,105 @@
+
+import wpilib
+import math
+import rev
+
+'''
+change is here
+class PolarDrive:
+	def Init():
+		self.magnitude = 0
+		self.angle = 0
+	
+	def Resultant(x,y):
+		self.magnitude = (x**2+y**2)**0.5
+		self.angle = atan(y/x)
+	'''
+class MyRobot(wpilib.TimedRobot):
+	
+	def robotInit(self):
+		self.kP = 0.03
+		self.kI = 0.00
+		self.kD = 0.00
+		
+		
+		self.kF = 0.00
+		self.kToleranceDegrees = 1.0
+		self.turnRatio = .1
+		self.angle = 1
+		self.volt = 1
+		self.position = 1
+		self.x = 1
+		self.y = 1
+		self.magnitude = 1
+		self.angle = 1
+		self.position = 1
+		self.Analog_enc = wpilib.AnalogInput(1)
+		'''Robot initialization function'''
+		self.tolerance= .5 #tolerance for the turn motor
+		# object that handles basic drive operations
+		self.driveMotor = rev.CANSparkMax(1,rev.MotorType.kBrushless)
+		self.turnMotor = rev.CANSparkMax(4,rev.MotorType.kBrushless)
+		self.joystick = wpilib.Joystick(0)
+		self.Hall_offset = -24
+		#our abs sensor is off by 24 degrees
+		
+		self.Integral= 0
+		self.previous_error =0
+	def autonomousInit(self):
+		pass
+	def autonomousPeriodic(self):
+		pass
+		
+	def PID(self):
+		"""PID for angle control"""
+		error = self.target - self.Analog_enc.getValue() # Error = Target - Actual
+		self.integral = integral + (error*.02)
+		derivative = (error - self.previous_error) / .02
+		self.rcw = self.kP*error + self.kI*self.integral + self.kD*derivative
+		if self.rcw > 1:
+			self.rcw = 1
+		
+		
+
+
+
+		
+	def teleopInit(self):
+		pass
+	def teleopPeriodic(self):
+		
+		self.x = wpilib.Joystick(1).getX()
+		self.y = wpilib.Joystick(1).getY()
+		
+		self.magnitude = (self.x**2+self.y**2)**0.5
+		if self.x != 0:
+			self.target = math.atan(self.y/self.x)
+		if self.x ==0 and self.y > 0:
+			self.target = 90
+			
+		if self.x ==0 and self.y <0:
+			self.target = 270
+		else:
+			pass
+		
+		self.volt = self.Analog_enc.getValue()
+	
+		self.position = ((((self.volt)*(90))/1000) +self.Hall_offset)
+	
+		
+		print('current voltage at' + str(self.volt*10**-3))
+		print('predicted position at' + str(self.position))
+		self.driveMotor.set(.6*self.joystick.getY())
+		if wpilib.Joystick(1).getRawButton(11):
+			self.target = 45
+		if wpilib.Joystick(1).getRawButton(11):
+			self.turnMotor.set(self.rcw)
+		PID()
+		
+		#self.turnMotor.set(self.turnRatio*self.joystick.getZ()*-1)
+		
+		
+		
+		
+if __name__ == '__main__':
+	wpilib.run(MyRobot)
