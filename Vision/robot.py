@@ -27,9 +27,9 @@ NetworkTables.initialize()
 NetworkTables.addConnectionListener(connectionListener, immediateNotify=True)
 sd = NetworkTables.getTable('SmartDashboard') 
 
-sd.getValue('adjust_x', 0)
-sd.getValue('adjust_y', 0)
-sd.getValue('adjust_z', 0)
+sd.getValue('dx', 0)
+sd.getValue('yaw', 0)
+sd.getValue('pitch', 0)
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -43,9 +43,14 @@ class MyRobot(wpilib.TimedRobot):
 	def robotInit(self):
 		#I got fed up with how long 'frontLeft, frontRight, etc.' looked
 		#Drive motors
-		self.vp = 0
-		self.vi = 0
-		self.vd = 0
+		self.vP = 0
+		self.vI = 0
+		self.vD = 0
+		self.turretMotor = rev.CANSparkMax(0, rev.MotorType.kBrushless)
+		self.idealAngle= 30
+		#metric
+		self.maxVelocity = 5000*0.0762
+		
 		self.flDriveMotor = rev.CANSparkMax(2, rev.MotorType.kBrushless)
 		self.frDriveMotor = rev.CANSparkMax(1, rev.MotorType.kBrushless)
 		self.rlDriveMotor = rev.CANSparkMax(7, rev.MotorType.kBrushless)
@@ -192,41 +197,22 @@ class MyRobot(wpilib.TimedRobot):
 			axis = 0
 		return axis
 		
-	def Target_align(self,x,y,z):
+	def turretShoot(self,x,y,z): 
+		#the turret must first align with the plane of the center of the target
+		self.turretTurnController = PIDController(self.vP, self.vI, self.vD)
+		turretTurnController.enableContinuousInput(-30, 30)
+		turretTurnController.setSetpoint(0)
 		
-		controllerx = PIDController(self.vp, self.vi, self.vd,measurement_source=x )
-		controller.setInputRange(0, 1200)
-		controller.setContinuous()
-
-		# setSetpoint is now called setReference
-		controllerX.setReference(0)
-
-		# elsewhere...
-
-		outputX = controllerX.update()
-		# do something with the output, for example:
+		output = self.turretTurnController.calculate(Yaw)
 		
+		self.turretMotor.set(output)
 		
-		controllerY = PIDController(self.vp, self.vi, self.vd,measurement_source=y )
-		controllerY.setInputRange(0, 1200)
-		controllerY.setContinuous()
-		controllerY.setReference(0)
-
-		outputY = controllerY.update()
+		height= self.dx*tan(self.yaw)
+		#equation to find the necessary velocity pulled from wikipedia
+		vDesired= math.sqrt((((self.dx**2)*9.8)/(self.dx*sin(2*self.idealAngle)-2*(height)(math.cos(self.idealAngle))**2)))
+		if vDesired > self.maxVelocity
+			
 		
-		
-		controllerZ = PIDController(self.vp, self.vi, self.vd,measurement_source=z )
-
-		controllerZ.setInputRange(0, 50)
-		controllerZ.setContinuous()
-
-		controllerZ.setReference(0)
-
-
-		outputZ = controllerZ.update()
-		
-		self.swerveDrive(self,outputX,outputY,outputZ)
-	
 	def autonomousInit(self):
 		self.brakeMode()
 		'''We want the motors in brake mode while we are actually using them, which would be anytime
