@@ -8,4 +8,10 @@ Driver Station 1 (Chaos Theory Sticker)
 Swerveframe Rio
 -Neos flashed: 1/16/2020 (v1.5.1)
 
+*** Note on Robotpy 2020 Jan 14 pre release***
+py -3 -m pip install --pre pyfrc
 
+py -m robotpy_installer download-robotpy
+py -m robotpy_installer install-robotpy
+
+This will only install if pre 2020 pyfrc is not currently added to your version of python.
