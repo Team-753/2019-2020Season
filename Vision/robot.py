@@ -28,8 +28,8 @@ NetworkTables.addConnectionListener(connectionListener, immediateNotify=True)
 sd = NetworkTables.getTable('SmartDashboard') 
 
 sd.getValue('dx', 0)
-sd.getValue('yaw', 0)
-sd.getValue('pitch', 0)
+sd.getValue('Yaw', 0)
+sd.getValue('Pitch', 0)
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -43,13 +43,32 @@ class MyRobot(wpilib.TimedRobot):
 	def robotInit(self):
 		#I got fed up with how long 'frontLeft, frontRight, etc.' looked
 		#Drive motors
+		
+		#turret caster thing
 		self.vP = 0
 		self.vI = 0
 		self.vD = 0
+		self.turretTurnController = PIDController(self.vP, self.vI, self.vD)
+		turretTurnController.enableContinuousInput(0, 270)
+		
+		#controlling the angle of the hood
+		self.hoodServo = #find something to address the servo
+		
+		
+		#spinner velocity control
+		self.sP = 0
+		self.sI = 0
+		self.sD = 0
+		self.turretHoodController = PIDController(self.sp,self.sI,self.sD)
+		self.turretVelocityController.enableContinuousInput(200,6000)
+		
+		
 		self.turretMotor = rev.CANSparkMax(0, rev.MotorType.kBrushless)
 		self.idealAngle= 30
 		#metric
+		#Confirmation on velocity bounds: False
 		self.maxVelocity = 5000*0.0762
+		self.minVelocity = 2000*0.0762
 		
 		self.flDriveMotor = rev.CANSparkMax(2, rev.MotorType.kBrushless)
 		self.frDriveMotor = rev.CANSparkMax(1, rev.MotorType.kBrushless)
@@ -199,19 +218,25 @@ class MyRobot(wpilib.TimedRobot):
 		
 	def turretShoot(self,x,y,z): 
 		#the turret must first align with the plane of the center of the target
-		self.turretTurnController = PIDController(self.vP, self.vI, self.vD)
-		turretTurnController.enableContinuousInput(-30, 30)
+		
 		turretTurnController.setSetpoint(0)
 		
-		output = self.turretTurnController.calculate(Yaw)
-		
-		self.turretMotor.set(output)
-		
+		turretOutput = self.turretTurnController.calculate(Yaw)
+		self.turretMotor.set(turretOutput)
 		height= self.dx*tan(self.yaw)
 		#equation to find the necessary velocity pulled from wikipedia
-		vDesired= math.sqrt((((self.dx**2)*9.8)/(self.dx*sin(2*self.idealAngle)-2*(height)(math.cos(self.idealAngle))**2)))
-		if vDesired > self.maxVelocity
+		
+		vDesired= #(insert Liam math here
+		if (vDesired > self.maxVelocity) or (vDesired < self.minVelocity):
+			desiredAngle = #insert more Liam math here
 			
+			
+		else:
+			#velocity control
+			turretHoodController.setSetpoint(self.idealAngle) 
+			hoodOutput = self.turretHoodController.calculate(self.hoodEncoder)
+			self.hoodServo.set(hoodOutput)
+		
 		
 	def autonomousInit(self):
 		self.brakeMode()
