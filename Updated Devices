@@ -11,7 +11,8 @@ Swerveframe Rio
 *** Note on Robotpy 2020 Jan 14 pre release***
 py -3 -m pip install --pre pyfrc
 
-py -m robotpy_installer download-robotpy
-py -m robotpy_installer install-robotpy
+py -3 -m robotpy_installer download-robotpy
+py -3 -m robotpy_installer install-robotpy
 
-This will only install if pre 2020 pyfrc is not currently added to your version of python.
+This will only install if pre 2020 pyfrc is not currently added to your version of
+python
