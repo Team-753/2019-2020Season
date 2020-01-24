@@ -78,8 +78,8 @@ class MyRobot(wpilib.TimedRobot):
 		self.joystickDeadband = .05
 		self.timer = wpilib.Timer() #used to use it while testing stuff, don't need it now, but oh well
 		
-		self.robotLength = 10.0
-		self.robotWidth = 10.0
+		self.robotLength = 33.75
+		self.robotWidth = 29.75
 	def encoderBoundedPosition(self, encoder):
 		#I don't know if there's a set continuous for encoders, but it's easy enough to write
 		position = encoder.getPosition()
@@ -170,12 +170,22 @@ class MyRobot(wpilib.TimedRobot):
 	def autonomousPeriodic(self):
 		pass
 	def teleopInit(self):
+		print('teleop started')
+		
 		self.brakeMode()
 	def teleopPeriodic(self):
+		print('front left ' + str(self.flTurnEncoder))
+		print('back left ' + str(self.rrTurnEncoder)) 
+		print('back right ' + str(self.rlTurnEncoder)) 
+		print('front right ' + str(self.frTurnEncoder)) 
+		
 		x = self.checkDeadband(self.joystick.getX())
 		y = self.checkDeadband(self.joystick.getY())
 		z = self.checkDeadband(self.joystick.getZ())
 		self.swerveDrive(x, y, z)
+		
+		
+		
 	def disabledInit(self):
 		self.coastMode()
 
