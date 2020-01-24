@@ -72,7 +72,7 @@ class MyRobot(wpilib.TimedRobot):
 		for controller in self.turnControllers:
 			controller.setTolerance(self.PIDTolerance)
 			controller.enableContinuousInput(0, 360)
-		
+		self.motors=[]
 		self.joystick = wpilib.Joystick(0)
 		self.joystickDeadband = .05
 		self.timer = wpilib.Timer() #used to use it while testing stuff, don't need it now, but oh well
@@ -134,23 +134,25 @@ class MyRobot(wpilib.TimedRobot):
 		if max(abs(x), abs(y), abs(z)) == 0:
 			self.stopDriveMotors()
 		else:
-			for i in range(4):
-			#checking whether to go to angle and drive forward or go to other side and drive backward
-				position = self.encoderBoundedPosition(self.motors[i][0])
-				goal = self.motors[i][2]
-				difference = abs(position - goal)
-				if difference < 90 or difference > 270:
-					self.turnControllers[i].setSetpoint(goal)
-					self.driveMotors[i].set(self.motors[i])
-				else:
-					if goal < 180:
-						self.turnControllers[i].setSetpoint(goal + 180)
-						self.driveMotors[i].set(-1*self.motors[i])
+			try:
+				for i in range(3):
+				#checking whether to go to angle and drive forward or go to other side and drive backward
+					position = self.encoderBoundedPosition(self.motors[i][0])
+					goal = self.motors[i][2]
+					difference = abs(position - goal)
+					if difference < 90 or difference > 270:
+						self.turnControllers[i].setSetpoint(goal)
+						self.driveMotors[i].set(self.motors[i])
 					else:
-						self.turnControllers[i].setSetpoint(goal - 180)
-						self.driveMotors[i].set(-1*self.motros[i])
-				self.turnMotors[i].set(self.turnSpeedCalculator(i))
-		
+						if goal < 180:
+							self.turnControllers[i].setSetpoint(goal + 180)
+							self.driveMotors[i].set(-1*self.motors[i])
+						else:
+							self.turnControllers[i].setSetpoint(goal - 180)
+							self.driveMotors[i].set(-1*self.motros[i])
+					self.turnMotors[i].set(self.turnSpeedCalculator(i))
+			except Exception as e:
+				pass
 		'''I've been debating adding some checks to try and make this more efficient, but efficiency isn't
 		super important right now and, more importantly, I don't really know python so anything I can think
 		of would save minimal time (or possibly even make it take longer).'''
@@ -178,7 +180,11 @@ class MyRobot(wpilib.TimedRobot):
 	def teleopInit(self):
 		self.brakeMode()
 	def teleopPeriodic(self):
-		
+		for i in range(3):
+			try:
+				print(str(self.motors[i][2]))
+			except Exception as e:
+				pass
 		x = self.checkDeadband(self.joystick.getX())
 		y = self.checkDeadband(self.joystick.getY())
 		z = self.checkDeadband(self.joystick.getZ())
