@@ -99,11 +99,12 @@ class MyRobot(wpilib.TimedRobot):
 			motor.set(0)
 	def swerveMath(self, x, y, z):
 		r = math.hypot(self.robotLength, self.robotWidth)
+		#ethan edit: If I am correct, the derivation says to just divide by 2 here
 		
-		a = x - z*(self.robotLength/r)
-		b = x + z*(self.robotLength/r)
-		c = y - z*(self.robotWidth/r)
-		d = y + z*(self.robotWidth/r)
+		a = x - z*(self.robotLength/2)
+		b = x + z*(self.robotLength/2)
+		c = y - z*(self.robotWidth/2)
+		d = y + z*(self.robotWidth/2)
 		
 		flSpeed = math.hypot(b, c)
 		frSpeed = math.hypot(b, d)
