@@ -2,9 +2,9 @@ package org.frcteam2910.c2019.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.frcteam2910.c2019.Robot;
-import org.frcteam2910.c2019.subsystems.DrivetrainSubsystem;
-import org.frcteam2910.common.math.Rotation2;
-import org.frcteam2910.common.math.Vector2;
+import org.frcteam753.c2020.subsystems.DrivetrainSubsystem;
+import org.frcteam753.common.math.Rotation2;
+import org.frcteam753.common.math.Vector2;
 
 public class HolonomicDriveCommand extends Command {
     public HolonomicDriveCommand() {
@@ -13,14 +13,13 @@ public class HolonomicDriveCommand extends Command {
 
     @Override
     protected void execute() {
-        boolean ignoreScalars = Robot.getOi().primaryController.getLeftBumperButton().get();
 
-        double forward = Robot.getOi().primaryController.getLeftYAxis().get(true);
-        double strafe = Robot.getOi().primaryController.getLeftXAxis().get(true);
-        double rotation = Robot.getOi().primaryController.getRightXAxis().get(true, ignoreScalars);
+        double forward = Robot.getOi().myOnlyJoy.getX​();
+        double strafe = Robot.getOi().myOnlyJoy.getY​();
+        double rotation = Robot.getOi().myOnlyJoy.getZ();
 
-        boolean robotOriented = Robot.getOi().primaryController.getXButton().get();
-        boolean reverseRobotOriented = Robot.getOi().primaryController.getYButton().get();
+        boolean robotOriented = true;
+        boolean reverseRobotOriented = false;
 
         Vector2 translation = new Vector2(forward, strafe);
 

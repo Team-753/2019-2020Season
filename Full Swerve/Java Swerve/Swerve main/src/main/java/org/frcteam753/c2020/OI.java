@@ -1,5 +1,4 @@
 package org.frcteam2910.c2019;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.*;
@@ -17,10 +16,7 @@ public class OI {
     
 
     public OI() {
-        primaryController.getLeftXAxis().setInverted(true);
-        primaryController.getRightXAxis().setInverted(true);
-
-        primaryController.getRightXAxis().setScale(0.45);
+        //Set inverted
     }
 
     public void bindButtons(AutonomousSelector autonomousSelector) {
