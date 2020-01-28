@@ -1,9 +1,9 @@
-package org.frcteam2910.c2019.commands;
+package org.frcteam753.c2020.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.frcteam2910.c2019.subsystems.DrivetrainSubsystem;
-import org.frcteam2910.common.drivers.SwerveModule;
+import org.frcteam753.c2020.subsystems.DrivetrainSubsystem;
+import org.frcteam753.common.drivers.SwerveModule;
 
 public class WaitForFrontWheelsToDriveDistanceCommand extends Command {
     private final double distance;

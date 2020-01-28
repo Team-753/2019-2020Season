@@ -1,9 +1,9 @@
-package org.frcteam2910.c2019.commands;
+package org.frcteam753.c2020.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.frcteam2910.c2019.subsystems.ClimberSubsystem;
-import org.frcteam2910.c2019.subsystems.Superstructure;
-import org.frcteam2910.common.robot.drivers.NavX;
+import org.frcteam753.c2020.subsystems.ClimberSubsystem;
+import org.frcteam753.c2020.subsystems.Superstructure;
+import org.frcteam753.common.robot.drivers.NavX;
 
 public class SetRobotPitchCommand extends Command {
     private final double targetPitch;

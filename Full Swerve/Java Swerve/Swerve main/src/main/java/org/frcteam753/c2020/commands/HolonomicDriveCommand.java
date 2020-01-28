@@ -2,9 +2,9 @@ package org.frcteam2910.c2019.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.frcteam2910.c2019.Robot;
-import org.frcteam2910.c2019.subsystems.DrivetrainSubsystem;
-import org.frcteam2910.common.math.Rotation2;
-import org.frcteam2910.common.math.Vector2;
+import org.frcteam753.c2020.subsystems.DrivetrainSubsystem;
+import org.frcteam753.common.math.Rotation2;
+import org.frcteam753.common.math.Vector2;
 
 public class HolonomicDriveCommand extends Command {
     public HolonomicDriveCommand() {

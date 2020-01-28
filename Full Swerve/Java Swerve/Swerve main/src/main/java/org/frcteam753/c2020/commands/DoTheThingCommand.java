@@ -1,13 +1,13 @@
-package org.frcteam2910.c2019.commands;
+package org.frcteam753.c2019.commands;
 
 import edu.wpi.first.wpilibj.command.*;
-import org.frcteam2910.c2019.subsystems.CargoArmSubsystem;
-import org.frcteam2910.c2019.subsystems.HatchPlacerSubsystem;
-import org.frcteam2910.common.control.ITrajectoryConstraint;
-import org.frcteam2910.common.control.MaxAccelerationConstraint;
-import org.frcteam2910.common.control.MaxVelocityConstraint;
-import org.frcteam2910.common.math.Rotation2;
-import org.frcteam2910.common.math.Vector2;
+import org.frcteam753.c2020.subsystems.CargoArmSubsystem;
+import org.frcteam753.c2020.subsystems.HatchPlacerSubsystem;
+import org.frcteam753.common.control.ITrajectoryConstraint;
+import org.frcteam753.common.control.MaxAccelerationConstraint;
+import org.frcteam753.common.control.MaxVelocityConstraint;
+import org.frcteam753.common.math.Rotation2;
+import org.frcteam753.common.math.Vector2;
 
 public class DoTheThingCommand extends CommandGroup {
     private static final double RELEASE_DISTANCE = 21.5;
