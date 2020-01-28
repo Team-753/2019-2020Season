@@ -102,10 +102,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        boolean calibrationMode = SmartDashboard.getBoolean("Limelight Calibration Mode", false);
-
-        Limelight.CamMode mode = calibrationMode ? Limelight.CamMode.VISION : Limelight.CamMode.DRIVER;
-        VisionSubsystem.getInstance().getLimelight(Gamepiece.HATCH_PANEL).setCamMode(mode);
-        VisionSubsystem.getInstance().getLimelight(Gamepiece.CARGO).setCamMode(mode);
+        
     }
 }
