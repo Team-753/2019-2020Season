@@ -1,4 +1,4 @@
-package org.frcteam2910.c2019;
+package org.frcteam753.c2020;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -11,10 +11,14 @@ import org.frcteam753.c2020.vision.api.Gamepiece;
 import org.frcteam753.common.robot.drivers.Limelight;
 import org.frcteam753.common.robot.drivers.NavX;
 import org.frcteam753.common.robot.subsystems.SubsystemManager;
+import org.frcteam753.c2020.RobotMap
 
 public class Robot extends TimedRobot {
     private static final double UPDATE_DT = 5e-3; // 5 ms
-
+    private  AnalogInput Fl_enc = new AnalogInput(RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER);
+    private  AnalogInput Fr_enc = new AnalogInput(RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER);
+    private  AnalogInput Rl_enc = new AnalogInput(RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER);
+    private  AnalogInput Rr_enc = new AnalogInput(RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER);
     private final SubsystemManager subsystemManager = new SubsystemManager(
             
             DrivetrainSubsystem.getInstance(),
@@ -58,6 +62,10 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        System.out.println("Fl encoder at "+ Fl_enc )
+        System.out.println("Fr encoder at "+ Fr_enc)
+        System.out.println("Rl encoder at "+ Rl_enc)
+        System.out.println("Rr encoder at "+ Rr_enc)
     }
 
     @Override

@@ -16,10 +16,7 @@ public class OI {
     
 
     public OI() {
-        primaryController.getLeftXAxis().setInverted(true);
-        primaryController.getRightXAxis().setInverted(true);
-
-        primaryController.getRightXAxis().setScale(0.45);
+        //Set inverted
     }
 
     public void bindButtons(AutonomousSelector autonomousSelector) {
