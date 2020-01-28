@@ -59,7 +59,7 @@ class MyRobot(wpilib.TimedRobot):
 		self.sP = 0
 		self.sI = 0
 		self.sD = 0
-		self.turretHoodController = PIDController(self.sp,self.sI,self.sD)
+		self.turretVelocityController = PIDController(self.sp,self.sI,self.sD)
 		self.turretVelocityController.enableContinuousInput(200,6000)
 		
 		
@@ -216,7 +216,7 @@ class MyRobot(wpilib.TimedRobot):
 			axis = 0
 		return axis
 		
-	def turretShoot(self,x,y,z): 
+	def turretShoot(self): 
 		#the turret must first align with the plane of the center of the target
 		
 		turretTurnController.setSetpoint(0)
@@ -224,19 +224,19 @@ class MyRobot(wpilib.TimedRobot):
 		turretOutput = self.turretTurnController.calculate(Yaw)
 		self.turretMotor.set(turretOutput)
 		height= self.dx*tan(self.yaw)
-		#equation to find the necessary velocity pulled from wikipedia
+		
 		
 		vDesired= #(insert Liam math here
 		if (vDesired > self.maxVelocity) or (vDesired < self.minVelocity):
 			desiredAngle = #insert more Liam math here
-			
+			self.hoodServo.set(self.idealAngle)
 			
 		else:
 			#velocity control
-			turretHoodController.setSetpoint(self.idealAngle) 
-			hoodOutput = self.turretHoodController.calculate(self.hoodEncoder)
-			self.hoodServo.set(hoodOutput)
-		
+			self.hoodServo.set(self.idealAngle)
+			self.turretVelocityController.setSetpoint(vDesired)
+			outputV = self.turretVelocityController.calculate(self.turretMotor.getVelocity)
+			self.turretMotor.set(outputV)
 		
 	def autonomousInit(self):
 		self.brakeMode()
