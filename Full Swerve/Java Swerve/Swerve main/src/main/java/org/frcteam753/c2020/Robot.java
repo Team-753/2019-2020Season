@@ -10,7 +10,7 @@ import org.frcteam753.c2020.subsystems.*;
 import org.frcteam753.c2020.vision.api.Gamepiece;
 import org.frcteam753.common.robot.drivers.NavX;
 import org.frcteam753.common.robot.subsystems.SubsystemManager;
-import org.frcteam753.c2020.RobotMap
+import org.frcteam753.c2020.RobotMap;
 
 public class Robot extends TimedRobot {
     private static final double UPDATE_DT = 5e-3; // 5 ms
