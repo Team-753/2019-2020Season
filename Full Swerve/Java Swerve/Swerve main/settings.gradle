@@ -1,6 +1,6 @@
-rootProject.name = '2019CompetitionRobot'
+rootProject.name = '2020CompetitionRobot'
 
 include 'common'
 include 'common:robot'
-include 'vision-coprocessor'
-include 'vision-coprocessor:api'
+//include 'vision-coprocessor'
+//include 'vision-coprocessor:api'

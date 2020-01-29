@@ -8,7 +8,6 @@ import org.frcteam753.c2020.autonomous.AutonomousSelector;
 import org.frcteam753.c2020.autonomous.AutonomousTrajectories;
 import org.frcteam753.c2020.subsystems.*;
 import org.frcteam753.c2020.vision.api.Gamepiece;
-import org.frcteam753.common.robot.drivers.Limelight;
 import org.frcteam753.common.robot.drivers.NavX;
 import org.frcteam753.common.robot.subsystems.SubsystemManager;
 import org.frcteam753.c2020.RobotMap

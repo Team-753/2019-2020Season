@@ -31,7 +31,7 @@ repositories {
 deploy {
     targets {
         roboRIO('roborio') {
-            team = frc.getTeamOrDefault(2910)
+            team = frc.getTeamOrDefault(753)
         }
     }
     artifacts {
@@ -50,12 +50,12 @@ dependencies {
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
 
     compile project(':common:robot')
-    compile project(':vision-coprocessor:api')
+    
 }
 
 jar {
     from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest('org.frcteam2910.c2019.Main')
+    manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest('org.frcteam753.c2020.Main')
 }
 
 wrapper {
