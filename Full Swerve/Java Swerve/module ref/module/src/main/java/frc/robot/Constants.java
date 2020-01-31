@@ -31,20 +31,20 @@ public final class Constants {
     public static final int kFrontRightTurningMotorPort = 5;
     public static final int kRearRightTurningMotorPort = 7;
 
-    public static final int[] kFrontLeftTurningEncoderPorts = new int[]{0};
+    public static final int[] kFrontLeftTurningEncoderPorts = new int[]{1};
     public static final int[] kRearLeftTurningEncoderPorts = new int[]{2};
     public static final int[] kFrontRightTurningEncoderPorts = new int[]{4};
-    public static final int[] kRearRightTurningEncoderPorts = new int[]{5};
+    public static final int[] kRearRightTurningEncoderPorts = new int[]{3};
 
     public static final boolean kFrontLeftTurningEncoderReversed = false;
     public static final boolean kRearLeftTurningEncoderReversed = true;
     public static final boolean kFrontRightTurningEncoderReversed = false;
     public static final boolean kRearRightTurningEncoderReversed = true;
 
-    public static final double FrontLeftEncoderCorrection = 23;
-    public static final double FrontRightEncoderCorrection = 23;
-    public static final double BackRightEncoderCorrection = 23;
-    public static final double BackLeftEncoderCorrection = 23;
+    public static final double[] FrontLeftEncoderCorrection = new double[]{0,1};
+    public static final double[] FrontRightEncoderCorrection =new double[]{0,2};
+    public static final double[] BackRightEncoderCorrection = new double[]{0,3};
+    public static final double[] BackLeftEncoderCorrection = new double[]{0,4};
 
 
     public static final int[] kFrontLeftDriveEncoderPorts = new int[]{7, 8};

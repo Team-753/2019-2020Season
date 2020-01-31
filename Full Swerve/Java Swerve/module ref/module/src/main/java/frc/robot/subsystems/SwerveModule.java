@@ -43,7 +43,7 @@ public class SwerveModule {
    * @param driveMotorChannel   ID for the drive motor.
    * @param turningMotorChannel ID for the turning motor.
    */
-  private double encoffset = 0;
+  
   public SwerveModule(int driveMotorChannel,
                       int turningMotorChannel,
                       int[] driveEncoderPorts,
@@ -53,14 +53,15 @@ public class SwerveModule {
                       double EncOffset) {
                 
                 
-    double encoffset = EncOffset;
+   
     m_driveMotor = new CANSparkMax(driveMotorChannel,MotorType.kBrushless);
     m_turningMotor = new CANSparkMax(turningMotorChannel,MotorType.kBrushless);
 
     this.m_driveEncoder = new CANSparkMax(driveMotorChannel,MotorType.kBrushless);
-
-    this.m_turningEncoder = new AnalogInput(driveEncoderPorts[0]);
-
+    System.out.println(turningEncoderPorts[0]);
+    this.m_turningEncoder = new AnalogInput(turningEncoderPorts[0]);
+    
+    
     // Set the distance per pulse for the drive encoder. We can simply use the
     // distance traveled for one rotation of the wheel divided by the encoder
     // resolution.
@@ -100,16 +101,17 @@ public class SwerveModule {
    *
    * @param state Desired state with speed and angle.
    */
-  public void setDesiredState(SwerveModuleState state) {
+  public void setDesiredState(SwerveModuleState state,double[] EncoderOffset) {
     // Calculate the drive output from the drive PID controller.
     final var driveOutput = m_drivePIDController.calculate(
         m_driveEncoder.getEncoder().getVelocity(), state.speedMetersPerSecond);
 
     // Calculate the turning motor output from the turning PID controller.
     final var turnOutput = m_turningPIDController.calculate(
-        (m_turningEncoder.getValue()*EncConversionFactor) +encoffset, state.angle.getRadians()
+        (m_turningEncoder.getValue()*EncConversionFactor) +EncoderOffset[0], state.angle.getRadians()
     );
 
+    System.out.println("Motor number "+ EncoderOffset[1] );
     System.out.println(m_turningEncoder.getValue()*EncConversionFactor);
     // Calculate the turning motor output from the turning PID controller.
     m_driveMotor.set(driveOutput);

@@ -29,7 +29,7 @@ public class DriveSubsystem extends SubsystemBase {
                          DriveConstants.kFrontLeftTurningEncoderPorts,
                          DriveConstants.kFrontLeftDriveEncoderReversed,
                          DriveConstants.kFrontLeftTurningEncoderReversed,
-                         DriveConstants.FrontLeftEncoderCorrection);
+                         DriveConstants.FrontLeftEncoderCorrection[0]);
 
   private final SwerveModule m_rearLeft =
       new SwerveModule(DriveConstants.kRearLeftDriveMotorPort,
@@ -38,7 +38,7 @@ public class DriveSubsystem extends SubsystemBase {
                        DriveConstants.kRearLeftTurningEncoderPorts,
                        DriveConstants.kRearLeftDriveEncoderReversed,
                        DriveConstants.kRearLeftTurningEncoderReversed,
-                       DriveConstants.BackLeftEncoderCorrection);
+                       DriveConstants.BackLeftEncoderCorrection[0]);
 
 
   private final SwerveModule m_frontRight =
@@ -48,7 +48,7 @@ public class DriveSubsystem extends SubsystemBase {
                        DriveConstants.kFrontRightTurningEncoderPorts,
                        DriveConstants.kFrontRightDriveEncoderReversed,
                        DriveConstants.kFrontRightTurningEncoderReversed,
-                       DriveConstants.FrontRightEncoderCorrection);
+                       DriveConstants.FrontRightEncoderCorrection[0]);
 
   private final SwerveModule m_rearRight =
       new SwerveModule(DriveConstants.kRearRightDriveMotorPort,
@@ -57,7 +57,7 @@ public class DriveSubsystem extends SubsystemBase {
                        DriveConstants.kRearRightTurningEncoderPorts,
                        DriveConstants.kRearRightDriveEncoderReversed,
                        DriveConstants.kRearRightTurningEncoderReversed,
-                       DriveConstants.BackRightEncoderCorrection);
+                       DriveConstants.BackRightEncoderCorrection[0]);
 
   // The gyro sensor
   private final Gyro m_gyro = new ADXRS450_Gyro();
@@ -128,10 +128,10 @@ public class DriveSubsystem extends SubsystemBase {
     );
     SwerveDriveKinematics.normalizeWheelSpeeds(swerveModuleStates,
                                                DriveConstants.kMaxSpeedMetersPerSecond);
-    m_frontLeft.setDesiredState(swerveModuleStates[0]);
-    m_frontRight.setDesiredState(swerveModuleStates[1]);
-    m_rearLeft.setDesiredState(swerveModuleStates[2]);
-    m_rearRight.setDesiredState(swerveModuleStates[3]);
+    m_frontLeft.setDesiredState(swerveModuleStates[0],DriveConstants.FrontLeftEncoderCorrection);
+    m_frontRight.setDesiredState(swerveModuleStates[1],DriveConstants.FrontRightEncoderCorrection);
+    m_rearLeft.setDesiredState(swerveModuleStates[2],DriveConstants.BackLeftEncoderCorrection);
+    m_rearRight.setDesiredState(swerveModuleStates[3],DriveConstants.BackRightEncoderCorrection);
   }
 
   /**
@@ -142,10 +142,10 @@ public class DriveSubsystem extends SubsystemBase {
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.normalizeWheelSpeeds(desiredStates,
                                                DriveConstants.kMaxSpeedMetersPerSecond);
-    m_frontLeft.setDesiredState(desiredStates[0]);
-    m_frontRight.setDesiredState(desiredStates[1]);
-    m_rearLeft.setDesiredState(desiredStates[2]);
-    m_rearRight.setDesiredState(desiredStates[3]);
+    m_frontLeft.setDesiredState(desiredStates[0],DriveConstants.FrontLeftEncoderCorrection);
+    m_frontRight.setDesiredState(desiredStates[1],DriveConstants.FrontRightEncoderCorrection);
+    m_rearLeft.setDesiredState(desiredStates[2],DriveConstants.BackLeftEncoderCorrection);
+    m_rearRight.setDesiredState(desiredStates[3],DriveConstants.BackRightEncoderCorrection);
   }
 
   /**
