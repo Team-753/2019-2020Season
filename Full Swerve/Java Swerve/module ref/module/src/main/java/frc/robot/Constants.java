@@ -21,20 +21,20 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
  */
 public final class Constants {
   public static final class DriveConstants {
-    public static final int kFrontLeftDriveMotorPort = 0;
-    public static final int kRearLeftDriveMotorPort = 2;
-    public static final int kFrontRightDriveMotorPort = 4;
-    public static final int kRearRightDriveMotorPort = 6;
+    public static final int kFrontLeftDriveMotorPort = 2;
+    public static final int kRearLeftDriveMotorPort = 7;
+    public static final int kFrontRightDriveMotorPort = 1;
+    public static final int kRearRightDriveMotorPort = 5;
 
-    public static final int kFrontLeftTurningMotorPort = 1;
-    public static final int kRearLeftTurningMotorPort = 3;
-    public static final int kFrontRightTurningMotorPort = 5;
-    public static final int kRearRightTurningMotorPort = 7;
+    public static final int kFrontLeftTurningMotorPort = 3;
+    public static final int kRearLeftTurningMotorPort = 8;
+    public static final int kFrontRightTurningMotorPort = 4;
+    public static final int kRearRightTurningMotorPort = 6;
 
     public static final int[] kFrontLeftTurningEncoderPorts = new int[]{1};
-    public static final int[] kRearLeftTurningEncoderPorts = new int[]{2};
-    public static final int[] kFrontRightTurningEncoderPorts = new int[]{4};
-    public static final int[] kRearRightTurningEncoderPorts = new int[]{3};
+    public static final int[] kRearLeftTurningEncoderPorts = new int[]{3};
+    public static final int[] kFrontRightTurningEncoderPorts = new int[]{0};
+    public static final int[] kRearRightTurningEncoderPorts = new int[]{2};
 
     public static final boolean kFrontLeftTurningEncoderReversed = false;
     public static final boolean kRearLeftTurningEncoderReversed = true;
@@ -58,9 +58,9 @@ public final class Constants {
     public static final boolean kRearRightDriveEncoderReversed = true;
 
 
-    public static final double kTrackWidth = 0.5;
+    public static final double kTrackWidth = 0.75565;
     //Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = 0.7;
+    public static final double kWheelBase = 0.85725;
     //Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics =
         new SwerveDriveKinematics(

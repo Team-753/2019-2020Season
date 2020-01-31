@@ -10,6 +10,7 @@ package frc.robot;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
@@ -40,7 +41,7 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
   // The driver's controller
-  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  Joystick m_driverController = new Joystick(0);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -57,7 +58,7 @@ public class RobotContainer {
         new RunCommand(() -> m_robotDrive.drive(
             m_driverController.getY(GenericHID.Hand.kLeft),
             m_driverController.getX(GenericHID.Hand.kRight),
-            m_driverController.getX(GenericHID.Hand.kLeft), false)));
+            m_driverController.getZ(), false)));
 
   }
 
