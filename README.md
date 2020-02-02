@@ -6,8 +6,8 @@ Git and Github resources
 https://education.github.com/git-cheat-sheet-education.pdf
 
 
-
 max make a commit
 
 hi max
+
 
