@@ -21,15 +21,15 @@ import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
  */
 public final class Constants {
   public static final class DriveConstants {
-    public static final int kFrontLeftDriveMotorPort = 2;
-    public static final int kRearLeftDriveMotorPort = 7;
-    public static final int kFrontRightDriveMotorPort = 1;
-    public static final int kRearRightDriveMotorPort = 5;
+    public static final int kFrontLeftDriveMotorPort = 6;
+    public static final int kRearLeftDriveMotorPort = 8;
+    public static final int kFrontRightDriveMotorPort = 2;
+    public static final int kRearRightDriveMotorPort = 4;
 
-    public static final int kFrontLeftTurningMotorPort = 3;
-    public static final int kRearLeftTurningMotorPort = 8;
-    public static final int kFrontRightTurningMotorPort = 4;
-    public static final int kRearRightTurningMotorPort = 6;
+    public static final int kFrontLeftTurningMotorPort = 5;
+    public static final int kRearLeftTurningMotorPort = 7;
+    public static final int kFrontRightTurningMotorPort = 1;
+    public static final int kRearRightTurningMotorPort = 3;
 
     public static final int[] kFrontLeftTurningEncoderPorts = new int[]{1};
     public static final int[] kRearLeftTurningEncoderPorts = new int[]{3};
@@ -46,7 +46,7 @@ public final class Constants {
     public static final double[] BackRightEncoderCorrection = new double[]{0,3};
     public static final double[] BackLeftEncoderCorrection = new double[]{0,4};
 
-
+//Don't worry about these, they do not matter
     public static final int[] kFrontLeftDriveEncoderPorts = new int[]{7, 8};
     public static final int[] kRearLeftDriveEncoderPorts = new int[]{9, 10};
     public static final int[] kFrontRightDriveEncoderPorts = new int[]{11, 12};
