@@ -3,7 +3,6 @@
 #Example change
 
 import wpilib
-from wpilib_controller import PIDController
 import math
 import rev
 
@@ -132,7 +131,12 @@ class MyRobot(wpilib.TimedRobot):
 			for i in range(4):
 			#checking whether to go to angle and drive forward or go to other side and drive backward
 				position = self.encoderBoundedPosition(self.turnEncoders[i])
-				goal = speeds[2*i+1]
+				
+				if speeds[2*i+1] < 0:
+					goal = -speeds[2*i+1]+180
+				else:
+					goal = speeds[2*i+1]
+					
 				difference = abs(position - goal)
 				if difference < 90 or difference > 270:
 					self.turnControllers[i].setSetpoint(goal)
@@ -175,10 +179,10 @@ class MyRobot(wpilib.TimedRobot):
 		
 		self.brakeMode()
 	def teleopPeriodic(self):
-		print('front left ' + str(self.flTurnEncoder))
-		print('back left ' + str(self.rrTurnEncoder)) 
-		print('back right ' + str(self.rlTurnEncoder)) 
-		print('front right ' + str(self.frTurnEncoder)) 
+		print('front left ' + str(int(self.flTurnEncoder,16)))
+		print('back left ' + str(int(self.rrTurnEncoder,16))) 
+		print('back right ' + str(int(self.rlTurnEncoder,16))) 
+		print('front right ' + str(int(self.frTurnEncoder,16))) 
 		
 		x = self.checkDeadband(self.joystick.getX())
 		y = self.checkDeadband(self.joystick.getY())
