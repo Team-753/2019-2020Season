@@ -18,6 +18,7 @@ class MyRobot(wpilib.TimedRobot):
 			axis = 0
 		return axis
 	def autonomousInit(self):
+		self.drive.zeroEncoders()
 		self.drive.brake()
 		print('autonomous started')
 	def autonomousPeriodic(self):

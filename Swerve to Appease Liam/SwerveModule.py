@@ -39,8 +39,8 @@ class SwerveModule:
 		
 	def move(self,driveSpeed,angle):
 		'''I finally remembered what the thing I kept forgetting about was. Once swerve is working well enough,
-		we should add checks for better efficiency of moving. At a basic level, that could be making it so that
-		in this method, there is logic so that rather than moving all the way, individual modules would move to
+		we should add checks for better efficiency of moving. At a basic level that could be making it so that
+		in this method there is logic so that rather than moving all the way, individual modules would move to
 		the opposite side and just reverse the drive motors. More advanced control would be something in the
 		DriveTrain class that uses the turn motors' collective positions, goals, and velocities to tell them which
 		way they should turn. Could also have something in the module class that scales down drive speed as the module
