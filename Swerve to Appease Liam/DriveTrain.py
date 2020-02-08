@@ -2,7 +2,7 @@ import wpilib
 import math
 import rev
 from wpilib import controller as controller
-import SwerveModule.SwerveModule as SwerveModule
+from SwerveModule import SwerveModule
 
 class DriveTrain:
 	robotLength = 27.3
@@ -14,8 +14,39 @@ class DriveTrain:
 		self.rearLeft = SwerveModule(7,8,3,357.3)
 		self.rearRight = SwerveModule(3,4,1,290)
 		
-	def drive(self,x,y,z):
+	def move(self,x,y,z):
+		a = x - z*self.robotLength/2
+		b = x + z*self.robotLength/2
+		c = y - z*self.robotWidth/2
+		d = y + z*self.robotWidth/2
 		
+		frontLeftAngle = math.hypot(b,d)
+		frontRightAngle = math.hypot(b,c)
+		rearLeftAngle = math.hypot(a,d)
+		rearRightAngle = math.hypot(a,c)
+		
+		frontLeftSpeed = math.atan2(b,d)
+		frontRightSpeed = math.atan2(b,c)
+		rearLeftSpeed = math.atan2(a,d)
+		rearRightSpeed = math.atan2(a,c)
+		
+		maxSpeed = max(frontLeftSpeed,frontRightSpeed,rearLeftSpeed,rearRightSpeed)
+		if maxSpeed > 1:
+			frontLeftSpeed /= maxSpeed
+			frontRightSpeed /= maxSpeed
+			rearLeftSpeed /= maxSpeed
+			rearRightSpeed /= maxSpeed
+		
+		self.frontLeft.move(frontLeftSpeed,frontLeftAngle)
+		self.frontRight.move(frontRightSpeed,frontRightAngle)
+		self.rearLeft.move(rearLeftSpeed,rearLeftAngle)
+		self.rearRight.move(rearRightSpeed,rearRightAngle)
+		
+	def stationary(self):
+		self.frontLeft.stationary()
+		self.frontRight.stationary()
+		self.rearLeft.stationary()
+		self.rearRight.stationary()
 		
 	def zeroEncoders(self):
 		self.frontLeft.zeroEncoder()
