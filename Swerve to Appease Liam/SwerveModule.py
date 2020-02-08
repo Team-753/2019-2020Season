@@ -1,45 +1,49 @@
-
-import wpilib
 import math
 import rev
-from wpilib import controller as controller
+import hal
+from networktables import NetworkTables
 
-
-class SwerveModule():
-	def __init__(self):
-		pass
-		
-	def Module(driveID,turnID,absEncoderID,encoderOffset,encoderConversion,speed,angle):
-		kP = .0039
-		kI = 0
-		kD = 2.0e-6
-		PIDTolerance = 1.0
-		
-		target = 0
-		
-		turnTolerance = .1
-		driveTolerance = .1
+class SwerveModule:
+	wheelDiameter = 4 #inches
+	turnMotorEncoderConversion = 20 #NEO encoder gives 0-18 as 1 full rotation
+	absoluteEncoderConversion = .08877
 	
-		driveMotor = rev.CANSparkMax(driveID, rev.MotorType.kBrushless)
-		turnMotor = rev.CANSparkMax(turnID, rev.MotorType.kBrushless)
-		turnEncoder = wpilib.AnalogInput(absEncoderID)
-		
-		positionTarget = angle
-		revTarget = speed
-		
-		turnController = wpilib.controller.PIDController(kP, kI, kD)
-		#self.driveController = wpilib.controller.PIDController(self.kP, self.kI, self.kD)
-		
-		turnController.setTolerance(turnTolerance)
-		#self.driveController.setTolerance(self.driveTolerance)
-		
-		turnController.enableContinuousInput(-180, 180)
-		#self.driveController.enableContinuousInput(-1,1) 
-		
-		turnController.setSetpoint(positionTarget)
-		#self.driveController.setSetpoint(self.revTarget)
-		#I do not know whether we will be doing velocity for drive control
-		turnMotor.set(turnController.calculate(encoderConversion*turnEncoder.getValue()+encoderOffset-180))
-		driveMotor.set(revTarget)
-		
+	kP = .0039
+	kI = 0
+	kD = 0
 	
+	def __init__(self,driveID,turnID,encoderID,encoderOffset):
+		self.driveMotor = rev.CANSparkMax(driveID,rev.MotorType.kBrushless)
+		self.turnMotor = rev.CANSparkMax(turnID,rev.MotorType.kBrushless)
+		self.turnEncoder = self.turnMotor.getEncoder()
+		self.turnEncoder.setPositionConversionFactor(turnMotorEncoderConversion) #now is 0-360
+		
+		self.absoluteEncoder = wpilib.AnalogInput(encoderID)
+		self.absolutePosition = self.absoluteEncoder.getValue()*absoluteEncoderConversion
+		
+		self.offset = encoderOffset
+		
+	def encoderBoundedPosition(self):
+		position = self.turnEncoder.getPosition()%360 #this limits the encoder input
+		if position < 0: #to be on a single circle
+			position += 360
+		if position < 90: #this translates those values to correspond with what the
+			position += 90 #atan2 function returns (-180, 180)
+		else:
+			position -= 270
+		return position
+		
+	def move(self,speed,angle):
+		
+		
+	def zeroEncoder(self):
+		self.turnEncoder.setPosition(self.absolutePosition - self.offset)
+		
+	def brake(self):
+		self.driveMotor.setIdleMode(rev.IdleMode.kBrake)
+		self.turnMotor.setIdleMode(rev.IdleMode.kBrake)
+		
+	def coast(self):
+		self.driveMotor.setIdleMode(rev.IdleMode.kCoast)
+		self.turnMotor.setIdleMode(rev.IdleMode.kCoast)
+		
