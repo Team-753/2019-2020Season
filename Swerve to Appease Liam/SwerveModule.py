@@ -13,19 +13,23 @@ class SwerveModule:
 	kI = 0
 	kD = 0
 	
-	def __init__(self,driveID,turnID,encoderID,encoderOffset):
+	def __init__(self,driveID,turnID,encoderID,encoderOffset,name):
 		self.driveMotor = rev.CANSparkMax(driveID,rev.MotorType.kBrushless)
 		self.turnMotor = rev.CANSparkMax(turnID,rev.MotorType.kBrushless)
 		self.turnEncoder = self.turnMotor.getEncoder()
 		self.turnEncoder.setPositionConversionFactor(self.turnMotorEncoderConversion) #now is 0-360
 		
 		self.absoluteEncoder = wpilib.AnalogInput(encoderID)
-		self.absolutePosition = 360 - self.absoluteEncoder.getValue()*self.absoluteEncoderConversion + encoderOffset
+		self.encoderOffset = encoderOffset
 		#the above line centers the absolute encoder and then changes its direction, as the absolute encoders spin
 		#the opposite direction of the NEO encoders
 		
 		self.turnController = wpilib.controller.PIDController(self.kP, self.kI, self.kD)
 		self.turnController.enableContinuousInput(-180,180) #the angle range we decided to make standard
+		
+		self.turnDeadband = .035
+		
+		self.moduleName = name
 		
 	def encoderBoundedPosition(self):
 		position = self.turnEncoder.getPosition()%360 #this limits the encoder input
@@ -38,32 +42,35 @@ class SwerveModule:
 		return position
 		
 	def move(self,driveSpeed,angle):
-		'''I finally remembered what the thing I kept forgetting about was. Once swerve is working well enough,
-		we should add checks for better efficiency of moving. At a basic level that could be making it so that
-		in this method there is logic so that rather than moving all the way, individual modules would move to
-		the opposite side and just reverse the drive motors. More advanced control would be something in the
-		DriveTrain class that uses the turn motors' collective positions, goals, and velocities to tell them which
-		way they should turn. Could also have something in the module class that scales down drive speed as the module
-		is turning. All of these are just ways to limit the effect of turning a module while attempting to drive,
-		by either slowing down the driving or at least making the offset synchronized. I can explain more in-person'''
-		
 		position = self.encoderBoundedPosition()
 		
 		self.turnController.setSetpoint(angle) #tells the PID controller what our goal is
 		turnSpeed = self.turnController.calculate(position) #gets the ideal speed from the PID controller
 		
+		if abs(turnSpeed) < self.turnDeadband:
+			turnSpeed = 0
+		
 		self.driveMotor.set(driveSpeed)
 		self.turnMotor.set(turnSpeed)
+		
+		wpilib.SmartDashboard.putNumber(self.moduleName,position)
 		
 	def stationary(self):
 		self.driveMotor.set(0) #this will be smoother once we drive with velocity PID (by setting setpoint to 0)
 		
 		position = self.encoderBoundedPosition()
 		turnSpeed = self.turnController.calculate(position)
+		
+		if abs(turnSpeed) < self.turnDeadband:
+			turnSpeed = 0
+		
 		self.turnMotor.set(turnSpeed) #just let the turn motor go to its most recent goal
+		wpilib.SmartDashboard.putNumber(self.moduleName,position)
 		
 	def zeroEncoder(self):
-		self.turnEncoder.setPosition(self.absolutePosition)
+		absolutePosition = 360 - self.absoluteEncoder.getValue()*self.absoluteEncoderConversion + self.encoderOffset
+		self.turnEncoder.setPosition(absolutePosition)
+		self.turnController.setSetpoint(0)
 		
 	def brake(self):
 		self.driveMotor.setIdleMode(rev.IdleMode.kBrake)

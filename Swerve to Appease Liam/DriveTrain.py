@@ -10,25 +10,28 @@ class DriveTrain:
 	diagonal = math.hypot(robotLength,robotWidth)
 	
 	def __init__(self):
-		self.frontLeft = SwerveModule(5,6,2,???) #drive ID, turn ID, encoder ID, encoder offset
-		self.frontRight = SwerveModule(1,2,0,???)
-		self.rearLeft = SwerveModule(7,8,3,???)
-		self.rearRight = SwerveModule(3,4,1,???)
+		self.frontLeft = SwerveModule(5,6,2,67.9,"Front Left") #drive ID, turn ID, encoder ID, encoder offset
+		self.frontRight = SwerveModule(1,2,0,219.53,"Front Right")
+		self.rearLeft = SwerveModule(7,8,3,356.4,"Rear Left")
+		self.rearRight = SwerveModule(3,4,1,111.32, "Rear Right")
 		
 	def move(self,x,y,z):
-		a = x - z*self.robotLength/self.diagonal
-		b = x + z*self.robotLength/self.diagonal
-		c = y - z*self.robotWidth/self.diagonal
-		d = y + z*self.robotWidth/self.diagonal
+		wpilib.SmartDashboard.putNumber("x",x)
+		wpilib.SmartDashboard.putNumber("y",y)
+		
+		a = y - z*self.robotLength/self.diagonal
+		b = y + z*self.robotLength/self.diagonal
+		c = x - z*self.robotWidth/self.diagonal
+		d = x + z*self.robotWidth/self.diagonal
 		
 		frontLeftSpeed = math.hypot(b,d)
-		frontRightSpeed = math.hypot(b,c)
-		rearLeftSpeed = math.hypot(a,d)
+		frontRightSpeed = math.hypot(a,d) #used to be b and c
+		rearLeftSpeed = math.hypot(b,c) #used to be a and d
 		rearRightSpeed = math.hypot(a,c)
 		
 		frontLeftAngle = math.atan2(b,d)*180/math.pi #returns -180 to 180
-		frontRightAngle = math.atan2(b,c)*180/math.pi
-		rearLeftAngle = math.atan2(a,d)*180/math.pi
+		frontRightAngle = math.atan2(a,d)*180/math.pi #used to be b and c
+		rearLeftAngle = math.atan2(b,c)*180/math.pi #used to be a and d
 		rearRightAngle = math.atan2(a,c)*180/math.pi
 		
 		maxSpeed = max(frontLeftSpeed,frontRightSpeed,rearLeftSpeed,rearRightSpeed)
