@@ -7,28 +7,29 @@ from SwerveModule import SwerveModule
 class DriveTrain:
 	robotLength = 27.3
 	robotWidth = 23.1
+	diagonal = math.hypot(robotLength,robotWidth)
 	
 	def __init__(self):
-		self.frontLeft = SwerveModule(5,6,2,51.75)
-		self.frontRight = SwerveModule(1,2,0,37)
-		self.rearLeft = SwerveModule(7,8,3,357.3)
-		self.rearRight = SwerveModule(3,4,1,290)
+		self.frontLeft = SwerveModule(5,6,2,???) #drive ID, turn ID, encoder ID, encoder offset
+		self.frontRight = SwerveModule(1,2,0,???)
+		self.rearLeft = SwerveModule(7,8,3,???)
+		self.rearRight = SwerveModule(3,4,1,???)
 		
 	def move(self,x,y,z):
-		a = x - z*self.robotLength/2
-		b = x + z*self.robotLength/2
-		c = y - z*self.robotWidth/2
-		d = y + z*self.robotWidth/2
+		a = x - z*self.robotLength/self.diagonal
+		b = x + z*self.robotLength/self.diagonal
+		c = y - z*self.robotWidth/self.diagonal
+		d = y + z*self.robotWidth/self.diagonal
 		
-		frontLeftAngle = math.hypot(b,d)
-		frontRightAngle = math.hypot(b,c)
-		rearLeftAngle = math.hypot(a,d)
-		rearRightAngle = math.hypot(a,c)
+		frontLeftSpeed = math.hypot(b,d)
+		frontRightSpeed = math.hypot(b,c)
+		rearLeftSpeed = math.hypot(a,d)
+		rearRightSpeed = math.hypot(a,c)
 		
-		frontLeftSpeed = math.atan2(b,d)
-		frontRightSpeed = math.atan2(b,c)
-		rearLeftSpeed = math.atan2(a,d)
-		rearRightSpeed = math.atan2(a,c)
+		frontLeftAngle = math.atan2(b,d)*180/math.pi #returns -180 to 180
+		frontRightAngle = math.atan2(b,c)*180/math.pi
+		rearLeftAngle = math.atan2(a,d)*180/math.pi
+		rearRightAngle = math.atan2(a,c)*180/math.pi
 		
 		maxSpeed = max(frontLeftSpeed,frontRightSpeed,rearLeftSpeed,rearRightSpeed)
 		if maxSpeed > 1:
@@ -37,7 +38,7 @@ class DriveTrain:
 			rearLeftSpeed /= maxSpeed
 			rearRightSpeed /= maxSpeed
 		
-		self.frontLeft.move(frontLeftSpeed,frontLeftAngle)
+		self.frontLeft.move(frontLeftSpeed,frontLeftAngle) #speed, angle
 		self.frontRight.move(frontRightSpeed,frontRightAngle)
 		self.rearLeft.move(rearLeftSpeed,rearLeftAngle)
 		self.rearRight.move(rearRightSpeed,rearRightAngle)

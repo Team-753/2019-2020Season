@@ -9,7 +9,7 @@ class SwerveModule:
 	turnMotorEncoderConversion = 20 #NEO encoder gives 0-18 as 1 full rotation
 	absoluteEncoderConversion = .08877
 	
-	kP = .0039
+	kP = .0039 #these aren't actually tuned, and even if they are close, they're for driving a light robot on tile
 	kI = 0
 	kD = 0
 	
@@ -20,9 +20,9 @@ class SwerveModule:
 		self.turnEncoder.setPositionConversionFactor(self.turnMotorEncoderConversion) #now is 0-360
 		
 		self.absoluteEncoder = wpilib.AnalogInput(encoderID)
-		self.absolutePosition = self.absoluteEncoder.getValue()*self.absoluteEncoderConversion
-		
-		self.offset = encoderOffset
+		self.absolutePosition = 360 - self.absoluteEncoder.getValue()*self.absoluteEncoderConversion + encoderOffset
+		#the above line centers the absolute encoder and then changes its direction, as the absolute encoders spin
+		#the opposite direction of the NEO encoders
 		
 		self.turnController = wpilib.controller.PIDController(self.kP, self.kI, self.kD)
 		self.turnController.enableContinuousInput(-180,180) #the angle range we decided to make standard
@@ -56,11 +56,14 @@ class SwerveModule:
 		self.turnMotor.set(turnSpeed)
 		
 	def stationary(self):
-		self.driveMotor.set(0)
-		self.turnMotor.set(0)
+		self.driveMotor.set(0) #this will be smoother once we drive with velocity PID (by setting setpoint to 0)
+		
+		position = self.encoderBoundedPosition()
+		turnSpeed = self.turnController.calculate(position)
+		self.turnMotor.set(turnSpeed) #just let the turn motor go to its most recent goal
 		
 	def zeroEncoder(self):
-		self.turnEncoder.setPosition(self.absolutePosition - self.offset)
+		self.turnEncoder.setPosition(self.absolutePosition)
 		
 	def brake(self):
 		self.driveMotor.setIdleMode(rev.IdleMode.kBrake)
