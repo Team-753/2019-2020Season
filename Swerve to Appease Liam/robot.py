@@ -31,12 +31,11 @@ class MyRobot(wpilib.TimedRobot):
 		return axis
 		
 	def autonomousInit(self):
-		self.drive.zeroEncoders()
-		self.drive.brake()
+		self.drive.coast()
 		print('autonomous started')
 		
 	def autonomousPeriodic(self):
-		pass
+		self.drive.checkEncoders()
 		
 	def teleopInit(self):
 		self.drive.zeroEncoders()
