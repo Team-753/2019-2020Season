@@ -1,10 +1,10 @@
 import wpilib
 import rev
 
-class Feeder:
-	def __init__(self): #intakeMotor ID and speed of the motor
-		self.intakeMotor = rev.CANSparkMax(11, MotorType.kBrushless)
-		self.speed = 1
+class Intake:
+	def __init__(self, motorID, speed):
+		self.intakeMotor = rev.CANSparkMax(ID, MotorType.kBrushless)
+		self.speed = speed
 	def collect(self):
 		self.intakeMotor.set(self.speed)
 	def expel(self):

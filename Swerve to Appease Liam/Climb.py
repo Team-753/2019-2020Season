@@ -2,9 +2,9 @@ import wpilib
 import rev
 
 class Climb:
-	def __init__(self): #climbMotor ID and speed of the motor
-		self.climbMotor = rev.CANSparkMax(9, MotorType.kBrushless)
-		self.speed = 1
+	def __init__(self, motorID, speed):
+		self.climbMotor = rev.CANSparkMax(ID, MotorType.kBrushless)
+		self.speed = speed
 	def extend(self):
 		self.climbMotor.set(self.speed)
 	def contract(self):

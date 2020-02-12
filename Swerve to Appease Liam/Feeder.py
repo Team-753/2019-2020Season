@@ -2,9 +2,9 @@ import wpilib
 import rev
 
 class Feeder:
-	def __init__(self): #feederMotor ID and speed of the motor
-		self.feederMotor = rev.CANSparkMax(10, MotorType.kBrushless)
-		self.speed = 1
+	def __init__(self, motorID, speed):
+		self.feederMotor = rev.CANSparkMax(ID, MotorType.kBrushless)
+		self.speed = speed
 	def feed(self):
 		self.feederMotor.set(self.speed)
 	def puke(self):
