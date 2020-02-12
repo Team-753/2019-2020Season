@@ -1,11 +1,15 @@
 import wpilib
-import math
 import rev
 
 class Climb:
-	def __init__(self):
-		self.climbID = 9
-		self.upButtonID = 1
-		self.joystick = wpilib.Joystick #change this to the joystick on robot.py
-		self.climbMotor = rev.CANSparkMax(climbID, MotorType.kBrushless)
-		self.upButton = wpilib.SmartDashboard.getStickButton(self.joystick,self.upButtonID)
+	def __init__(self): #climbMotor ID and speed of the motor
+		self.climbMotor = rev.CANSparkMax(9, MotorType.kBrushless)
+		self.speed = 1
+	def extend(self):
+		self.climbMotor.set(self.speed)
+	def contract(self):
+		self.climbMotor.set(-self.speed)
+	def coast(self):
+		self.climbMotor.setIdleMode(rev.IdleMode.kCoast)
+	def brake(self):
+		self.climbMotor.setIdleMode(rev.IdleMode.kBrake)
