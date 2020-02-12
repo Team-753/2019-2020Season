@@ -65,7 +65,6 @@ class SwerveModule:
 			turnSpeed = 0
 		
 		self.turnMotor.set(turnSpeed) #just let the turn motor go to its most recent goal
-		wpilib.SmartDashboard.putNumber(self.moduleName,position)
 		
 	def zeroEncoder(self):
 		absolutePosition = 360 - self.absoluteEncoder.getValue()*self.absoluteEncoderConversion + self.encoderOffset
@@ -80,3 +79,6 @@ class SwerveModule:
 		self.driveMotor.setIdleMode(rev.IdleMode.kCoast)
 		self.turnMotor.setIdleMode(rev.IdleMode.kCoast)
 		
+	def checkEncoders(self):
+		absolutePosition = self.absoluteEncoder.getValue()*self.absoluteEncoderConversion
+		wpilib.SmartDashboard.putNumber(self.moduleName,absolutePosition)
