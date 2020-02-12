@@ -13,19 +13,24 @@ cond = threading.Condition()
 notified = [False]
 
 def connectionListener(connected, info):
-    print(info, '; Connected=%s' % connected)
-    with cond:
-        notified[0] = True
-        cond.notify()
+	 print(info, '; Connected=%s' % connected)
+	 with cond:
+		 notified[0] = True
+		 cond.notify()
 
-NetworkTables.initialize(server='10.xx.xx.2')
+NetworkTables.initialize()
 NetworkTables.addConnectionListener(connectionListener, immediateNotify=True)
-sd = NetworkTables.getTable('SmartDashboard')
+sd = NetworkTables.getTable('chameleon-vision').getSubTable('Live! Cam Chat HD VF0790')
 
 class TurretAuto:
 	def __init__(self):
-		self.yaw = sd.getNumber('yaw',0)
-	
+		self.yaw = sd.getEntry('yaw').getDouble(0)
+		self.pitch = sd.getEntry('pitch').getDouble(0)
+		
+		#determine from Chazzy-poo
+		self.hoodReduction = 12
+		
+		
 		self.turretMotorID = 11
 		self.spinMotorID = 12
 		
@@ -46,7 +51,7 @@ class TurretAuto:
 		
 		self.sP = 0.0
 		self.sI = 0.0
-		self.sP = 0.0
+		self.sD = 0.0
 		self.cruisingVelocity = 5500 #in rpm
 		self.minVelocity = 1000
 		
@@ -56,10 +61,23 @@ class TurretAuto:
 		self.spinController.setD(self.sD,0)
 		self.spinController.setSmartMotionMaxVelocity(self.cruisingVelocity,0)
 		self.spinController.setSmartMotionMinOutputVelocity(self.minVelocity, 0)
-
+		
+		self.hP = 0.003
+		self.hI = 0.0
+		self.hD = 0.0
+		self.hoodController = wpilib.controller.PIDController(self.hP,self.hI,self.hD)
+		self.hoodController.setBounds(0,90) #not really but think about later (ask Cheez)
+		self.hoodController.setTolerance(0.1)
+		
 	def velocityControl(self,desiredVelocity):
+		self.spinController.
+		
 		
 	def angularControl(self):
+		self.angTarget = 1#Liam math needed
+		
+		self.turretAngle = 
+		
 		
 	def turretAlign(self):
 		bop = self.yaw
