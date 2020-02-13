@@ -27,18 +27,18 @@ class TurretAuto:
 		self.yaw = sd.getEntry('yaw').getDouble(0)
 		self.pitch = sd.getEntry('pitch').getDouble(0)
 		
+		self.flywheelPort = 0
 		#determine from Chazzy-poo
 		self.hoodReduction = 12
 		
 		
 		self.turretMotorID = 11
 		self.spinMotorID = 12
-		
+		self.spinMotor2ID = 13
 		
 		self.turretMotor = rev.CANSparkMax(self.turretMotorID,rev.MotorType.kBrushless)
 		self.spinMotor = rev.CANSparkMax(self.spinMotorID,rev.MotorType.kBrushless)
-		self.hoodServo = ??
-		
+		self.spinMotor2 = rev.CANSparkMax(self.spinMotor2ID,rev.MotorType.kBrushless)
 		
 		self.kP = 0.0
 		self.kI = 0.0
@@ -56,28 +56,50 @@ class TurretAuto:
 		self.minVelocity = 1000
 		
 		self.spinController = rev._impl.CANPIDController(self.spinMotor)
-		self.spinController.setP(self.sP,0)
-		self.spinController.setI(self.sI,0)
-		self.spinController.setD(self.sD,0)
-		self.spinController.setSmartMotionMaxVelocity(self.cruisingVelocity,0)
-		self.spinController.setSmartMotionMinOutputVelocity(self.minVelocity, 0)
+		self.spinController.setP(self.sP,self.flywheelPort)
+		self.spinController.setI(self.sI,self.flywheelPort)
+		self.spinController.setD(self.sD,self.flywheelPort)
+		self.spinController.setSmartMotionMaxVelocity(self.cruisingVelocity,self.flywheelPort)
+		self.spinController.setSmartMotionMinOutputVelocity(self.minVelocity, self.flywheelPort)
 		
-		self.hP = 0.003
-		self.hI = 0.0
-		self.hD = 0.0
-		self.hoodController = wpilib.controller.PIDController(self.hP,self.hI,self.hD)
-		self.hoodController.setBounds(0,90) #not really but think about later (ask Cheez)
-		self.hoodController.setTolerance(0.1)
+		self.spinController2 = rev._impl.CANPIDController(self.spinMotor2)
+		self.spinController2.setP(self.sP,self.flywheelPort)
+		self.spinController2.setI(self.sI,self.flywheelPort)
+		self.spinController2.setD(self.sD,self.flywheelPort)
+		self.spinController2.setSmartMotionMaxVelocity(self.cruisingVelocity,self.flywheelPort)
+		self.spinController2.setSmartMotionMinOutputVelocity(self.minVelocity, self.flywheelPort)
 		
+		self.stallLimit = 78
+		self.freeLimit  = 22
+		self.limitRPM  = 2200
+		self.spinMotor.setSmartCurrentLimit(self.stallLimit,self.freeLimit,self.limitRPM)
+		
+		
+		self.hoodServo = wpilib.PWM(0)
+		#not a definite value, just guesstimation
+		self.defaultVelocity = 4500
+		self.startAngle = 30 #need to determine physically what the angle is initially
+		self.idealAngle = 35
 	def velocityControl(self,desiredVelocity):
-		self.spinController.
 		
+		self.spinController.setReference(desiredVelocity,rev.ControlType.kSmartVelocity,self.flywheelPort)
+		self.spinController2.setReference(desiredVelocity,rev.ControlType.kSmartVelocity,self.flywheelPort)
+		hoodAngle = 90-self.idealAngle+self.startAngle
+		self.hoodServo.setPosition((90-self.idealAngle+self.startAngle)/360)
 		
 	def angularControl(self):
+		
+		
+		
+		
+		self.spinController.setReference(self.defaultVelocity,rev.ControlType.kSmartVelocity,self.flywheelPort)
+		self.spinController2.setReference(self.defaultVelocity,rev.ControlType.kSmartVelocity,self.flywheelPort)
 		self.angTarget = 1#Liam math needed
 		
-		self.turretAngle = 
+		#the angle of the circular hood section
+		self.turretAngle =90 + -self.angTarget + self.startAngle
 		
+		self.hoodServo.setPosition((self.hoodReduction*self.turretAngle)/360)
 		
 	def turretAlign(self):
 		bop = self.yaw
@@ -93,6 +115,7 @@ class TurretAuto:
 		
 		if (vDesired > self.maxVelocity) or (vDesired < self.minVelocity):
 			#Angular control
+			
 			angularControl()
 			
 			
