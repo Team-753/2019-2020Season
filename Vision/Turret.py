@@ -35,7 +35,10 @@ class TurretAuto:
 		self.turretMotorID = 11
 		self.spinMotorID = 12
 		self.spinMotor2ID = 13
+		self.engageMotorID = 14
 		
+		
+		self.engageMotor = rev.CANSparkMax(self.engageMotorID,rev.MotorType.kBrushless)
 		self.turretMotor = rev.CANSparkMax(self.turretMotorID,rev.MotorType.kBrushless)
 		self.spinMotor = rev.CANSparkMax(self.spinMotorID,rev.MotorType.kBrushless)
 		self.spinMotor2 = rev.CANSparkMax(self.spinMotor2ID,rev.MotorType.kBrushless)
@@ -62,6 +65,7 @@ class TurretAuto:
 		self.spinController.setSmartMotionMaxVelocity(self.cruisingVelocity,self.flywheelPort)
 		self.spinController.setSmartMotionMinOutputVelocity(self.minVelocity, self.flywheelPort)
 		
+		#don't know whether we are using two motors, likely depends on an epic battle between Liam and Chaz
 		self.spinController2 = rev._impl.CANPIDController(self.spinMotor2)
 		self.spinController2.setP(self.sP,self.flywheelPort)
 		self.spinController2.setI(self.sI,self.flywheelPort)
@@ -90,8 +94,6 @@ class TurretAuto:
 	def angularControl(self):
 		
 		
-		
-		
 		self.spinController.setReference(self.defaultVelocity,rev.ControlType.kSmartVelocity,self.flywheelPort)
 		self.spinController2.setReference(self.defaultVelocity,rev.ControlType.kSmartVelocity,self.flywheelPort)
 		self.angTarget = 1#Liam math needed
@@ -100,6 +102,7 @@ class TurretAuto:
 		self.turretAngle =90 + -self.angTarget + self.startAngle
 		
 		self.hoodServo.setPosition((self.hoodReduction*self.turretAngle)/360)
+		
 		
 	def turretAlign(self):
 		bop = self.yaw
@@ -123,3 +126,7 @@ class TurretAuto:
 			#velocity control
 			self.velocityControl(vDesired)
 			
+		if self.shootButton:
+			self.engageMotor.set(0.7) #not a confirmed speed
+		else:
+			self.engageMotor.set(0)
