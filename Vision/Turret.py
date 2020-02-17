@@ -66,13 +66,15 @@ class TurretAuto:
 		self.spinController.setSmartMotionMinOutputVelocity(self.minVelocity, self.flywheelPort)
 		
 		#don't know whether we are using two motors, likely depends on an epic battle between Liam and Chaz
+		#Chaz won (we are just using one)
+		'''
 		self.spinController2 = rev._impl.CANPIDController(self.spinMotor2)
 		self.spinController2.setP(self.sP,self.flywheelPort)
 		self.spinController2.setI(self.sI,self.flywheelPort)
 		self.spinController2.setD(self.sD,self.flywheelPort)
 		self.spinController2.setSmartMotionMaxVelocity(self.cruisingVelocity,self.flywheelPort)
 		self.spinController2.setSmartMotionMinOutputVelocity(self.minVelocity, self.flywheelPort)
-		
+		'''
 		self.stallLimit = 78
 		self.freeLimit  = 22
 		self.limitRPM  = 2200
@@ -80,6 +82,7 @@ class TurretAuto:
 		
 		
 		self.hoodServo = wpilib.PWM(0)
+		self.hoodServo2 = wpilib.PWM(1)
 		#not a definite value, just guesstimation
 		self.defaultVelocity = 4500
 		self.startAngle = 30 #need to determine physically what the angle is initially
@@ -93,18 +96,19 @@ class TurretAuto:
 		
 	def angularControl(self):
 		
-		
 		self.spinController.setReference(self.defaultVelocity,rev.ControlType.kSmartVelocity,self.flywheelPort)
-		self.spinController2.setReference(self.defaultVelocity,rev.ControlType.kSmartVelocity,self.flywheelPort)
+		#self.spinController2.setReference(self.defaultVelocity,rev.ControlType.kSmartVelocity,self.flywheelPort)
 		self.angTarget = 1#Liam math needed
 		
 		#the angle of the circular hood section
 		self.turretAngle =90 + -self.angTarget + self.startAngle
 		
 		self.hoodServo.setPosition((self.hoodReduction*self.turretAngle)/360)
+		self.hoodServo2.setPosition((self.hoodReduction*self.turretAngle)/360)
 		
 		
 	def turretAlign(self):
+		
 		bop = self.yaw
 		turretOutput = self.turretTurnController.calculate(bop)
 		self.turretMotor.set(turretOutput)
